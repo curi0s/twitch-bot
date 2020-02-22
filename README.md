@@ -15,7 +15,7 @@ And you should also create a `today.txt` file for your `!today` command content.
 
 ## Build & Deploy
 
-I use Docker to run the bot so the commands are the actual ones I use.
+I use Docker to build and run the bot. These are the commands I actually use.
 
 ## Build
 
