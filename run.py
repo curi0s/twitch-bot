@@ -40,7 +40,7 @@ class Bot(commands.Bot):
             return
         await ctx.send('Die für mich wichtigsten Extensions (für vscode) sind: Remote Containers, Settings Sync, TODO Highlight, GitLens, markdownlint, Prettier, YAML, Todo+, Todo Tree, TODO Highlight')
 
-    @commands.command(name='repository', aliases=['repo'])
+    @commands.command(name='repository', aliases=['repo', 'repositories'])
     async def repository(self, ctx):
         if self.cooldown('repository'):
             return
@@ -50,7 +50,7 @@ class Bot(commands.Bot):
     async def hackintosh(self, ctx):
         if self.cooldown('hackintosh'):
             return
-        await ctx.send('Der Hackintosh ist ein PC auf dem MacOS installiert ist. Die verbauten Komponenten findest du hier https://github.com/curi0s/stream#hackintosh')
+        await ctx.send('Der Hackintosh ist ein PC auf dem MacOS installiert ist. Die verbauten Komponenten findest du hier https://github.com/curi0s/stream#computer-hackintosh')
 
     @commands.command(name='job', aliases=['beruf'])
     async def job(self, ctx):
@@ -78,6 +78,12 @@ class Bot(commands.Bot):
         if self.cooldown('social'):
             return
         await ctx.send('Twitter: https://www.twitter.com/curi0sDE - Discord: https://discord.gg/curi0sDE - Instagram: https://www.instagram.com/curi0sDE')
+
+    @commands.command(name='font')
+    async def font(self, ctx):
+        if self.cooldown('font'):
+            return
+        await ctx.send('Als font wird Fira Code V2 verwendet: https://github.com/tonsky/FiraCode')
 
 
 bot = Bot(

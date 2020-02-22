@@ -12,3 +12,19 @@ prefix: "!"
 ```
 
 And you should also create a `today.txt` file for your `!today` command content.
+
+## Build & Deploy
+
+I use Docker to run the bot so the commands are the actual ones I use.
+
+## Build
+
+```bash
+docker build -t twitch-bot .
+```
+
+## Deploy
+
+```bash
+docker run -d --name twitch-bot -v /Users/fabian/Dev/GitHub/twitch-bot/today.txt:/opt/bot/today.txt twitch-bot
+```
