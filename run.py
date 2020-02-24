@@ -40,7 +40,7 @@ class Bot(commands.Bot):
             return
         await ctx.send('Die für mich wichtigsten Extensions (für vscode) sind: Remote Containers, Settings Sync, TODO Highlight, GitLens, markdownlint, Prettier, YAML, Todo+, Todo Tree, TODO Highlight')
 
-    @commands.command(name='repository', aliases=['repo', 'repositories'])
+    @commands.command(name='repository', aliases=['repo', 'repositories', 'repos'])
     async def repository(self, ctx):
         if self.cooldown('repository'):
             return
