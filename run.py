@@ -56,13 +56,13 @@ class Bot(commands.Bot):
     async def job(self, ctx):
         if self.cooldown('job'):
             return
-        await ctx.send('Fabian hat eine Ausbildung zum Fachinformatiker Systemintegration absolviert und arbeitet inzwischen als Systemengineer')
+        await ctx.send('Fabian hat mit ca. 12 Jahren begonnen, sich fürs Programmieren zu interessieren und hat dadurch mit HTML, CSS und PHP angefangen. Später hat er dann eine Ausbildung zum Fachinformatiker Systemintegration absolviert und arbeitet inzwischen seit mehr als 10 Jahren als Systemengineer')
 
     @commands.command(name='theme')
     async def theme(self, ctx):
         if self.cooldown('theme'):
             return
-        await ctx.send('Das verwendet Theme für vscode ist JetJet-Alternate-Gray - https://marketplace.visualstudio.com/items?itemName=JohnyGeorges.jetjet-theme')
+        await ctx.send('Das Theme für vscode ist JetJet-Alternate-Gray - https://marketplace.visualstudio.com/items?itemName=JohnyGeorges.jetjet-theme')
 
     @commands.command(name='today', aliases=['heute'])
     async def today(self, ctx):
