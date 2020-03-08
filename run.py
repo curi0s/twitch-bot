@@ -28,6 +28,12 @@ class Bot(commands.Bot):
     async def event_message(self, message):
         await self.handle_commands(message)
 
+    @commands.command(name='new')
+    async def new(self, ctx):
+        if not ctx.author.is_mod:
+            return
+        await ctx.send('Benutzt wird vscode von Microsoft - https://code.visualstudio.com/')
+    
     @commands.command(name='vscode', aliases=['editor'])
     async def vscode(self, ctx):
         if self.cooldown('vscode'):
