@@ -26,5 +26,5 @@ docker build -t twitch-bot .
 ## Deploy
 
 ```bash
-docker run -d --name twitch-bot -v /home/fabian/Dev/github.com/curi0s/twitch-bot/today.txt:/opt/bot/today.txt --restart unless-stopped twitch-bot
+docker run -d --name twitch-bot -v /home/fabian/Dev/github.com/curiTTV/twitch-bot/today.txt:/opt/bot/today.txt --restart unless-stopped twitch-bot
 ```
