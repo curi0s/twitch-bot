@@ -1,30 +1,9 @@
-# Twitch bot for tech streams
+# Twitch bot for twitch.tv/curi
 
-You need a `config.yml` file in the root of this repository to get the bot working
+The old bot was written in Python and can be found in the [python branch](https://github.com/curiTTV/twitch-bot/tree/python).
 
-```yml
----
-irc_token: xxx
-nick: xxx
-initial_channels:
-    - xxx
-prefix: "!"
-```
+Two env vars have to be set `TOKEN` (Twitch chat auth token) and `MONGO_HOST` (MongoDB hostname or ip). For the connection to the MongoDB host the default port 27017 will be used.
 
-And you should also create a `today.txt` file for your `!today` command content.
+## MongoDB
 
-## Build & Deploy
-
-I use Docker to build and run the bot. These are the commands I actually use.
-
-## Build
-
-```bash
-docker build -t twitch-bot .
-```
-
-## Deploy
-
-```bash
-docker run -d --name twitch-bot -v /home/fabian/Dev/github.com/curiTTV/twitch-bot/today.txt:/opt/bot/today.txt --restart unless-stopped twitch-bot
-```
+The database `bots` and two collections named `commands` and `talers` will be created after the usage of their respective built-in commands.
