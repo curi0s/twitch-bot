@@ -76,11 +76,21 @@ func normalizeUsername(username string) string {
 
 func main() {
 	token := os.Getenv("TOKEN")
-	mongoHost := os.Getenv("MONGO_HOST")
+	mongodbHost := os.Getenv("MONGODB_HOST")
+	logLevel := os.Getenv("LOG_LEVEL")
 
 	log := logrus.New()
 
-	log.SetLevel(logrus.InfoLevel)
+	switch logLevel {
+	case "debug":
+		log.SetLevel(logrus.DebugLevel)
+	case "info":
+		log.SetLevel(logrus.InfoLevel)
+	case "error":
+		log.SetLevel(logrus.ErrorLevel)
+	default:
+		log.Fatal("Invalid log level provided")
+	}
 
 	twirgoOptions := twirgo.Options{
 		Username: "curi_BOT_",
@@ -93,26 +103,26 @@ func main() {
 
 	ch, err := t.Connect()
 	if err == twirgo.ErrInvalidToken {
-		twirgoOptions.Log.Fatal(err)
+		log.Fatal(err)
 	}
 
 	client, err := mongo.NewClient(options.Client().
-		ApplyURI("mongodb://" + mongoHost + ":27017"))
+		ApplyURI("mongodb://" + mongodbHost + ":27017"))
 
 	if err != nil {
-		twirgoOptions.Log.Fatal(err)
+		log.Fatal(err)
 	}
 
 	err = client.Connect(context.TODO())
 	if err != nil {
-		twirgoOptions.Log.Fatal(err)
+		log.Fatal(err)
 	}
 
 	defer client.Disconnect(context.TODO())
 
 	err = client.Ping(context.TODO(), nil)
 	if err != nil {
-		twirgoOptions.Log.Fatal(err)
+		log.Fatal(err)
 	}
 
 	cCommands := client.Database("bots").Collection("commands")
@@ -124,24 +134,26 @@ func main() {
 			// get all commands from db
 			cur, err := cCommands.Find(context.TODO(), bson.M{}, options.Find())
 			if err != nil {
-				twirgoOptions.Log.Fatal(err)
+				log.Fatal(err)
 			}
 
 			err = cur.All(context.TODO(), &commands)
 			if err != nil {
-				twirgoOptions.Log.Fatal(err)
+				log.Fatal(err)
 			}
 
 			// get all taler from db
 			cur, err = cTalers.Find(context.TODO(), bson.M{}, options.Find())
 			if err != nil {
-				twirgoOptions.Log.Fatal(err)
+				log.Fatal(err)
 			}
 
 			err = cur.All(context.TODO(), &talers)
 			if err != nil {
-				twirgoOptions.Log.Fatal(err)
+				log.Fatal(err)
 			}
+
+			log.Info("Connected to Twitch chat, loaded all command and taler")
 
 		case twirgo.EventMessageReceived:
 			parts := strings.Split(ev.Message.Content, " ")
@@ -174,7 +186,7 @@ func main() {
 
 				if err != nil {
 					t.SendWhisper(ev.ChannelUser.User.Username, err.Error())
-					twirgoOptions.Log.Fatal(err)
+					log.Fatal(err)
 				}
 
 			case "deletecmd":
@@ -190,7 +202,7 @@ func main() {
 
 				if err != nil {
 					t.SendWhisper(ev.ChannelUser.User.Username, err.Error())
-					twirgoOptions.Log.Fatal(err)
+					log.Fatal(err)
 				}
 
 			case "addtaler":
@@ -208,7 +220,7 @@ func main() {
 
 				if err != nil {
 					t.SendWhisper(ev.ChannelUser.User.Username, err.Error())
-					twirgoOptions.Log.Fatal(err)
+					log.Fatal(err)
 				}
 
 			case "movetaler":
@@ -228,7 +240,7 @@ func main() {
 
 				if err != nil {
 					t.SendWhisper(ev.ChannelUser.User.Username, err.Error())
-					twirgoOptions.Log.Fatal(err)
+					log.Fatal(err)
 				}
 
 				_, err := cTalers.DeleteOne(context.TODO(), bson.M{
@@ -237,7 +249,7 @@ func main() {
 
 				if err != nil {
 					t.SendWhisper(ev.ChannelUser.User.Username, err.Error())
-					twirgoOptions.Log.Fatal(err)
+					log.Fatal(err)
 				}
 
 			case "taler":
@@ -249,7 +261,7 @@ func main() {
 				resp, err := http.Get("https://api.crunchprank.net/twitch/followage/" + ev.Channel.Name + "/" + ev.ChannelUser.User.Username + "?precision=4")
 				if err != nil {
 					t.SendWhisper(ev.Channel.Name, err.Error())
-					twirgoOptions.Log.Fatal(err)
+					log.Fatal(err)
 					continue
 				}
 
@@ -257,7 +269,7 @@ func main() {
 				body, err := ioutil.ReadAll(resp.Body)
 				if err != nil {
 					t.SendWhisper(ev.Channel.Name, err.Error())
-					twirgoOptions.Log.Fatal(err)
+					log.Fatal(err)
 					continue
 				}
 
