@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
+	"sort"
 	"strconv"
 	"strings"
 
@@ -252,6 +253,18 @@ func main() {
 					log.Fatal(err)
 				}
 
+			case "help":
+				cmds := []string{
+					"!taler", "!followage",
+				}
+				for _, cmd := range commands {
+					cmds = append(cmds, "!"+cmd.Name)
+				}
+
+				sort.Strings(cmds)
+
+				t.SendMessage(ev.Channel.Name, strings.Join(cmds, ", "))
+
 			case "taler":
 				taler := findTalers(ev.ChannelUser.User.Username)
 
@@ -265,8 +278,8 @@ func main() {
 					continue
 				}
 
-				defer resp.Body.Close()
 				body, err := ioutil.ReadAll(resp.Body)
+				resp.Body.Close()
 				if err != nil {
 					t.SendWhisper(ev.Channel.Name, err.Error())
 					log.Fatal(err)
